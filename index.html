@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" ng-app="sfvApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Feed Viewer</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/filters.js"></script>
+</head>
+<body ng-controller="sfvCtrl">
+<div class="container">
+    <div class="alert alert-danger" role="alert" ng-show="msg">{{msg}}</div>
+    <form>
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control input-lg" placeholder="Wayback URL" ng-model="wbUrl">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" ng-click="updateWbUrl()">Go</button>
+            </span>
+        </div>
+    </form>
+    <div ng-show="flickrPerson">
+        <h2>Flickr Person Info</h2>
+        <dl class="dl-horizontal">
+            <dt>Id</dt>
+            <dd>{{flickrPerson["person"]["id"]}}</dd>
+            <dt>Username</dt>
+            <dd>{{flickrPerson["person"]["username"]["_content"]}}</dd>
+            <dt>Realname</dt>
+            <dd>{{flickrPerson["person"]["realname"]["_content"]}}</dd>
+        </dl>
+        <a class="btn btn-primary" data-toggle="collapse" href="#flickrPersonInfoJson" aria-expanded="false" aria-controls="flickrPersonInfoJson">Json</a>
+        <div class="collapse" id="flickrPersonInfoJson">
+            <pre>{{flickrPerson | json}}</pre>
+        </div>
+    </div>
+    <div ng-show="flickrPublicPhotos">
+        <h2>Flickr Public Photos</h2>
+        <div ng-repeat="flickrPhoto in flickrPublicPhotos" class="row">
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <img ng-src="{{flickrPublicPhotosUrls[$index]}}_t.jpg" />
+                    <div class="caption">{{flickrPhoto["photo"]["title"]["_content"]}}</div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h3>Photo {{flickrPhoto["photo"]["id"]}}</h3>
+                <dl class="dl-horizontal">
+                    <dt>Title</dt>
+                    <dd>{{flickrPhoto["photo"]["title"]["_content"]}}</dd>
+                    <dt>Description</dt>
+                    <dd>{{flickrPhoto["photo"]["description"]["_content"]}}</dd>
+                    <dt>Date uploaded</dt>
+                    <dd>{{flickrPhoto["photo"]["dateuploaded"]}}</dd>
+                    <dt>Original format</dt>
+                    <dd>{{flickrPhoto["photo"]["originalformat"]}}</dd>
+                    <dt>License</dt>
+                    <dd>{{flickrPhoto["photo"]["license"]}}</dd>
+                    <dt>Public visibility</dt>
+                    <dd>{{flickrPhoto["photo"]["visibility"]["ispublic"]}}</dd>
+                    <dt>Friend visibility</dt>
+                    <dd>{{flickrPhoto["photo"]["visibility"]["isfriend"]}}</dd>
+                    <dt>Family visibility</dt>
+                    <dd>{{flickrPhoto["photo"]["visibility"]["isfamily"]}}</dd>
+                </dl>
+                <a class="btn btn-primary" data-toggle="collapse" href="#flickrPhotoInfoJson{{$index}}" aria-expanded="false" aria-controls="flickrPhotoInfoJson{{$index}}">Json</a>
+                <a class="btn btn-primary" href="{{flickrPublicPhotosUrls[$index]}}_b.jpg">Large image</a>
+                <a class="btn btn-primary" href="{{flickrPublicPhotosUrls[$index]}}_o.jpg">Original image</a>
+                <div class="collapse" id="flickrPhotoInfoJson{{$index}}">
+                    <pre>{{flickrPhoto | json}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="tweets">
+        <h2>Tweets</h2>
+        <div ng-repeat="tweet in tweets" class="row" style="margin-top:10px;">
+            <div class="col-md-4 well">
+                <div ng-bind-html="tweet | tweet_text"></div>
+                <div ng-repeat='media in tweet["entities"]["media"]' class="thumbnail">
+                    <img ng-src='{{media["media_url"]}}' />
+                    <div class="caption">{{media["display_url"]}}</div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h4>Tweet {{tweet["id"]}}</h4>
+                <dl class="dl-horizontal">
+                    <dt>User Id</dt>
+                    <dd>{{tweet["user"]["id"]}}</dd>
+                    <dt>User Name</dt>
+                    <dd>{{tweet["user"]["name"]}}</dd>
+                    <dt>User Screen Name</dt>
+                    <dd>{{tweet["user"]["screen_name"]}}</dd>
+                    <dt>Created at</dt>
+                    <dd>{{tweet["created_at"]}}</dd>
+                </dl>
+                <a class="btn btn-primary" data-toggle="collapse" href="#tweetJson{{$index}}" aria-expanded="false" aria-controls="tweetJson{{$index}}">Json</a>
+                <div class="collapse" id="tweetJson{{$index}}">
+                    <pre>{{tweet | json}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
