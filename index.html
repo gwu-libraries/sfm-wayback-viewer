@@ -89,6 +89,20 @@
                     <img ng-src='{{media["media_url"]}}' />
                     <div class="caption">{{media["display_url"]}}</div>
                 </div>
+                <div ng-show='tweet["retweeted_status"]' class="well well-sm">
+                    <div ng-bind-html='tweet["retweeted_status"] | tweet_text'></div>
+                    <div ng-repeat='media in tweet["retweeted_status"]["entities"]["media"]' class="thumbnail">
+                        <img ng-src='{{media["media_url"]}}' />
+                        <div class="caption">{{media["display_url"]}}</div>
+                    </div>
+                </div>
+                <div ng-show='tweet["quoted_status"]' class="well well-sm">
+                    <div ng-bind-html='tweet["quoted_status"] | tweet_text'></div>
+                    <div ng-repeat='media in tweet["quoted_status"]["entities"]["media"]' class="thumbnail">
+                        <img ng-src='{{media["media_url"]}}' />
+                        <div class="caption">{{media["display_url"]}}</div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-8">
                 <h4>Tweet {{tweet["id"]}}</h4>

@@ -14,7 +14,7 @@ sfvFilters.filter('tweet_text', ['$log', '$sce', function($log, $sce) {
           var start = url["indices"][0];
           var end = url["indices"][1];
           var url_text = orig_text.substring(start, end);
-          text = text.replace(url_text, "<a href=\"" + url["expanded_url"] + "\">" + url_text + "</a>");
+          text = text.replace(url_text, "<a href=\"" + url["expanded_url"] + "\">" + url["display_url"] + "</a>");
       }
       //Remove media links
       for(var i in tweet["entities"]["media"]) {
